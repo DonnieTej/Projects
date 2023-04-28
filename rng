@@ -1,0 +1,18 @@
+import random
+
+passlen = int(input("Enter the length of the password! "))
+
+use_letters = input("Do you want letters in the password? (y/n) ").lower() == 'y'
+use_numbers = input("Do you want numbers in the password? (y/n) ").lower() == 'y'
+use_symbols = input("Do you want symbols in the password? (y/n) ").lower() == 'y'
+
+s = ""
+if use_letters:
+    s += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+if use_numbers:
+    s += "0123456789"
+if use_symbols:
+    s += "!@#$%^&*()_+-=[]{}|;':\"<>,.?/~`"
+
+P = "".join(random.sample(s,passlen))
+print (P)
