@@ -1,0 +1,44 @@
+#Imported necessary libraries and modules
+import numpy as np
+import tensorflow as tf
+import keras
+from keras import datasets, layers, models
+from keras.utils import to_categorical
+
+#Loaded the CIFAR-10 dataset using the TensorFlow Keras datasets module.
+#The dataset is split into training and testing sets with images (x_train, x_test) and their corresponding labels (y_train, y_test).
+#Dataset being used it the CIFAR-10 Dataset.
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+
+#Preprocessed the images by converting their pixel values to float32 and scaling them to a range of 0 to 1.
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+
+#Converted the integer labels into one-hot encoded vectors.
+#A necessary step for multi-class classification tasks when using the categorical crossentropy loss function.
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
+
+#Created a simple Convolutional Neural Network (CNN) using the Keras Sequential API.
+#Model consists of three pairs of Conv2D and MaxPooling2D layers.
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10, activation='softmax'))
+
+#Compiled the model using the Adam optimizer
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+#Trained the model for 20 epochs using a batch size of 64.
+#Also provided the test set as validation data to monitor the model's performance on unseen data during training.
+history = model.fit(x_train, y_train, epochs=20, batch_size=64, validation_data=(x_test, y_test))
+
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+print(f'Test accuracy: {test_acc}')
