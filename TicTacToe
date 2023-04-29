@@ -1,0 +1,60 @@
+board = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
+
+def print_board():
+    print(board[0] + '|' + board[1] + '|' + board[2])
+    print('-+-+-')
+    print(board[3] + '|' + board[4] + '|' + board[5])
+    print('-+-+-')
+    print(board[6] + '|' + board[7] + '|' + board[8])
+
+def get_player_move(player):
+    while True:
+        move = input(f"Player {player}, please enter a number (1-9) to make a move: ")
+        try:
+            move = int(move)
+            if move >= 1 and move <= 9:
+                if board[move - 1] == ' ':
+                    return move - 1
+                else:
+                    print("That space is already taken!")
+            else:
+                print("Please enter a number between 1 and 9.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def check_for_win(player):
+    if (board[0] == board[1] == board[2] == player or
+        board[3] == board[4] == board[5] == player or
+        board[6] == board[7] == board[8] == player or
+        board[0] == board[3] == board[6] == player or
+        board[1] == board[4] == board[7] == player or
+        board[2] == board[5] == board[8] == player or
+        board[0] == board[4] == board[8] == player or
+        board[2] == board[4] == board[6] == player):
+        return True
+    else:
+        return False
+
+def play_game():
+    print("Welcome to Tic Tac Toe!")
+    print_board()
+    while True:
+        move = get_player_move('X')
+        board[move] = 'X'
+        print_board()
+        if check_for_win('X'):
+            print("Player X wins!")
+            break
+        if ' ' not in board:
+            print("Tie game!")
+            break
+        move = get_player_move('O')
+        board[move] = 'O'
+        print_board()
+        if check_for_win('O'):
+            print("Player O wins!")
+            break
+        if ' ' not in board:
+            print("Tie game!")
+            break
+play_game()
