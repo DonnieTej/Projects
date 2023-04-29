@@ -1,0 +1,44 @@
+import random
+
+def input_user_move():
+    while True:
+        move = input("Enter your move (rock/paper/scissors): ").lower()
+        if move in ['rock', 'paper', 'scissors']:
+            return move
+        else:
+            print("Invalid move. Please enter rock, paper, or scissors.")
+
+
+def get_computer_move():
+    moves = ['rock', 'paper', 'scissors']
+    return random.choice(moves)
+
+def get_winner(user_move, computer_move):
+    if user_move == computer_move:
+        return "tie"
+    elif (user_move == "rock" and computer_move == "scissors") or \
+         (user_move == "paper" and computer_move == "rock") or \
+         (user_move == "scissors" and computer_move == "paper"):
+        return "user"
+    else:
+        return "computer"
+
+def play_game():
+    while True:
+        user_move = input_user_move()
+        computer_move = get_computer_move()
+        print(f"Computer's move: {computer_move}")
+        winner = get_winner(user_move, computer_move)
+
+        if winner == "tie":
+            print("It's a tie!")
+        elif winner == "user":
+            print("You win!")
+        else:
+            print("Computer wins!")
+
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            break
+
+play_game()
